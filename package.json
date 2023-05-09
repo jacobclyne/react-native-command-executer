@@ -1,33 +1,18 @@
+
 {
-  "name": "react-native-command-executer",
-  "title": "React Native Command Executer",
-  "version": "1.0.4",
-  "description": "Execute shell commands for ios/android devices from react-native",
+  "name": "react-native-command-executor",
+  "version": "1.0.0rc-7",
+  "description": "React Native Wrapper to execute commands inside android apps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/imokhles/react-native-command-executer.git",
-    "baseUrl": "https://github.com/imokhles/react-native-command-executer"
-  },
   "keywords": [
     "react-native"
   ],
-  "author": {
-    "name": "Mokhlas Hussein (iMokhles)",
-    "email": "mokhleshussien@aol.com"
-  },
+  "author": "iMokhles",
   "license": "MIT",
-  "licenseFilename": "LICENSE",
-  "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "^16.8.1",
-    "react-native": ">=0.59.0-rc.0 <1.0.x"
-  },
-  "devDependencies": {
-    "react": "^16.8.3",
-    "react-native": "^0.59.10"
+    "react-native": "^0.71.3"
   }
 }

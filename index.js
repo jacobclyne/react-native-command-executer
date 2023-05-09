@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
 
-const { SNCommandExecuter } = NativeModules;
+const { SNCommandExecutor } = NativeModules;
 
-export default SNCommandExecuter;
+export default SNCommandExecutor;

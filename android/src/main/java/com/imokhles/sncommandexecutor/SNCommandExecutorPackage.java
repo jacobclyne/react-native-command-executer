@@ -1,4 +1,5 @@
-package com.imokhles.command_executer;
+
+package com.imokhles.sncommandexecutor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,10 +11,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-public class SNCommandExecuterPackage implements ReactPackage {
+public class SNCommandExecutorPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new SNCommandExecuterModule(reactContext));
+        return Arrays.<NativeModule>asList(new SNCommandExecutorModule(reactContext));
+    }
+
+    // Deprecated from RN 0.47
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
     }
 
     @Override
