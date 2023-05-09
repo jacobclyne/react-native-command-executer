@@ -89,7 +89,7 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
         if (localProcess != null && localProcess.exitValue() == 0) {
             WritableMap map = new WritableNativeMap();
             map.putBoolean("status", true);
-            map.putString("output", output.toString())
+            map.putString("output", output.toString());
             callback.invoke(map);
         }
     }
