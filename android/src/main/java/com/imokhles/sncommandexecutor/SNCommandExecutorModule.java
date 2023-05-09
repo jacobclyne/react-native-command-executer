@@ -19,6 +19,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.ByteArrayOutputStream;
 
+import java.lang.Process;
+import java.lang.ProcessBuilder;
+
+
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -38,71 +42,39 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public boolean executeCommand(String command, final Callback callback) {
-        Runtime runtime = Runtime.getRuntime();
-        Process localProcess = null;
-        OutputStreamWriter osw = null;
-        BufferedReader reader = null;
-        StringBuilder output = new StringBuilder();
+    public void executeCommand(String command, Callback callback) {
+        new Thread(() -> {
+            ProcessBuilder processBuilder = new ProcessBuilder("su", "-c", command);
+            StringBuilder output = new StringBuilder();
+            boolean success = true;
 
-        try {
-            localProcess = runtime.exec("su");
-            osw = new OutputStreamWriter(localProcess.getOutputStream());
-            osw.write(command);
-            osw.flush();
-            osw.close();
+            try {
+                Process process = processBuilder.start();
 
-            reader = new BufferedReader(new InputStreamReader(localProcess.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            WritableMap map = new WritableNativeMap();
-            map.putBoolean("status", false);
-            callback.invoke(map);
-        } finally {
-            if (osw != null) {
-                try {
-                    osw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    WritableMap map = new WritableNativeMap();
-                    map.putBoolean("status", false);
-                    callback.invoke(map);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        output.append(line).append("\n");
+                    }
                 }
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    WritableMap map = new WritableNativeMap();
-                    map.putBoolean("status", false);
-                    callback.invoke(map);
+
+                int exitCode = process.waitFor();
+                if (exitCode != 0) {
+                    success = false;
                 }
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                success = false;
             }
-        }
-        try {
-            if (localProcess != null) {
-                localProcess.waitFor();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
             WritableMap map = new WritableNativeMap();
-            map.putBoolean("status", false);
-            callback.invoke(map);
-        }
-        if (localProcess != null && localProcess.exitValue() == 0) {
-            WritableMap map = new WritableNativeMap();
-            map.putBoolean("status", true);
+            map.putBoolean("status", success);
             map.putString("output", output.toString());
             callback.invoke(map);
-        }
-
-        return false;
+        }).start();
     }
+
 
     @ReactMethod
     public void verifyRootStatus(final Callback callback) {
