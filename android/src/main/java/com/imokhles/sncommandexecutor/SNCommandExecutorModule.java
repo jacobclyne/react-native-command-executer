@@ -100,6 +100,8 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
             map.putString("output", output.toString());
             callback.invoke(map);
         }
+
+        return false;
     }
 
     @ReactMethod
