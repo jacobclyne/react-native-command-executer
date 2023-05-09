@@ -30,7 +30,7 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public boolean executeCommand(String command, final Callback call) {
+    public boolean executeCommand(String command, final Callback callback) {
         Runtime runtime = Runtime.getRuntime();
         Process localProcess = null;
         OutputStreamWriter osw = null;
