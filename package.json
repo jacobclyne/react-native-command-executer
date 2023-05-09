@@ -1,7 +1,7 @@
 
 {
   "name": "react-native-command-executor",
-  "version": "1.0.0rc-7",
+  "version": "1.0.0",
   "description": "React Native Wrapper to execute commands inside android apps",
   "main": "index.js",
   "scripts": {
