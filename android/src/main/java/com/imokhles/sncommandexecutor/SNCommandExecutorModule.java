@@ -10,6 +10,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -50,14 +51,18 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            call.reject(ex.getLocalizedMessage(), null, ex);
+            WritableMap map = new WritableNativeMap();
+            map.putBoolean("status", false);
+            callback.invoke(map);
         } finally {
             if (osw != null) {
                 try {
                     osw.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    call.reject(e.getLocalizedMessage(), null, e);
+                    WritableMap map = new WritableNativeMap();
+                    map.putBoolean("status", false);
+                    callback.invoke(map);
                 }
             }
             if (reader != null) {
@@ -65,7 +70,9 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
                     reader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    call.reject(e.getLocalizedMessage(), null, e);
+                    WritableMap map = new WritableNativeMap();
+                    map.putBoolean("status", false);
+                    callback.invoke(map);
                 }
             }
         }
@@ -75,12 +82,18 @@ public class SNCommandExecutorModule extends ReactContextBaseJavaModule {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-            call.reject(e.getLocalizedMessage(), null, e);
+            WritableMap map = new WritableNativeMap();
+            map.putBoolean("status", false);
+            callback.invoke(map);
         }
         if (localProcess != null && localProcess.exitValue() == 0) {
-            call.resolve(new JSObject().put("status", true).put("output", output.toString()));
+            WritableMap map = new WritableNativeMap();
+            map.putBoolean("status", true);
+            map.putString("output", output.toString())
+            callback.invoke(map);
         }
     }
+
     @ReactMethod
     public void verifyRootStatus(final Callback callback) {
         WritableMap map = new WritableNativeMap();
