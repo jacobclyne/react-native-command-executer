@@ -13,6 +13,6 @@
   "author": "iMokhles",
   "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.71.3"
+    "react-native": "^0.72.0"
   }
 }
